@@ -156,7 +156,7 @@ namespace IIG.BinaryFlag
     public class FlagTests_Expect_Throw
     {
         [Fact]
-        public void Test_ResetFlag_Constructor_ZeroLength_Throws()
+        public void Test_Constructor_ZeroLength_Throws()
         {
             Assert.Throws<ArgumentOutOfRangeException>(
                 () => { MultipleBinaryFlag multipleBinaryFlag = new MultipleBinaryFlag(0); });
