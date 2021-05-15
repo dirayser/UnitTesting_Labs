@@ -3,6 +3,55 @@ using Xunit;
 
 namespace IIG.BinaryFlag
 {
+    public class FlagTests_Limits_Tests
+    {
+        ulong min = 2;
+        ulong max = 17179868704;
+
+        [Fact]
+        public void Test_ResetFlag_Constructor_MinLengthM1_Throws()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => { MultipleBinaryFlag multipleBinaryFlag = new MultipleBinaryFlag(min - 1); });
+        }
+
+        [Fact]
+        public void Test_ResetFlag_Constructor_MinLengthM1_True()
+        {
+           MultipleBinaryFlag multipleBinaryFlag = new MultipleBinaryFlag(min);
+            Assert.True(multipleBinaryFlag.GetFlag());
+        }
+
+        [Fact]
+        public void Test_ResetFlag_Constructor_MiLengthP1_True()
+        {
+            MultipleBinaryFlag multipleBinaryFlag = new MultipleBinaryFlag(min + 1);
+            Assert.True(multipleBinaryFlag.GetFlag());
+        }
+
+        [Fact]
+        public void Test_ResetFlag_Constructor_MaxLengthM1_True()
+        {
+            MultipleBinaryFlag multipleBinaryFlag = new MultipleBinaryFlag(max - 1);
+            Assert.True(multipleBinaryFlag.GetFlag());
+        }
+
+        [Fact]
+        public void Test_ResetFlag_Constructor_MaxLength_True()
+        {
+            MultipleBinaryFlag multipleBinaryFlag = new MultipleBinaryFlag(max);
+            Assert.True(multipleBinaryFlag.GetFlag());
+        }
+
+        [Fact]
+        public void Test_ResetFlag_Constructor_MaxLengthP1_Throws()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => { MultipleBinaryFlag multipleBinaryFlag = new MultipleBinaryFlag(max + 1); });
+        }
+
+    }
+
     public class FlagTests_Expect_True
     {
         [Fact]
@@ -62,19 +111,21 @@ namespace IIG.BinaryFlag
             Assert.False(multipleBinaryFlag.GetFlag());
         }
 
-        [Fact]
-        public void Test_GetFlag_DefaultTrueValue_Changed_False()
-        {
-            MultipleBinaryFlag multipleBinaryFlag = new MultipleBinaryFlag(3, false);
-            multipleBinaryFlag.ResetFlag(1);
-            Assert.False(multipleBinaryFlag.GetFlag());
-        }
 
         [Fact]
         public void Test_GetFlag_DefaultFalseValue_Changed_False()
         {
             MultipleBinaryFlag multipleBinaryFlag = new MultipleBinaryFlag(3, false);
             multipleBinaryFlag.SetFlag(1);
+            Assert.False(multipleBinaryFlag.GetFlag());
+        }
+
+
+        [Fact]
+        public void Test_GetFlag_DefaultTrueValue_Changed_False()
+        {
+            MultipleBinaryFlag multipleBinaryFlag = new MultipleBinaryFlag(3);
+            multipleBinaryFlag.ResetFlag(1);
             Assert.False(multipleBinaryFlag.GetFlag());
         }
 
@@ -109,20 +160,6 @@ namespace IIG.BinaryFlag
         {
             Assert.Throws<ArgumentOutOfRangeException>(
                 () => { MultipleBinaryFlag multipleBinaryFlag = new MultipleBinaryFlag(0); });
-        }
-
-        [Fact]
-        public void Test_ResetFlag_Constructor_OutOfRangeSmaller_Throws()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(
-                () => { MultipleBinaryFlag multipleBinaryFlag = new MultipleBinaryFlag(1); });
-        }
-
-        [Fact]
-        public void Test_ResetFlag_Constructor_OutOfRangeBigger_Throws()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(
-                () => { bool? multipleBinaryFlag = new MultipleBinaryFlag(17179868705).GetFlag(); });
         }
 
         [Fact]
