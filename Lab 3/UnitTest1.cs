@@ -71,29 +71,4 @@ namespace IIG.PasswordHashingUtils
             Assert.NotEqual(hash, hash2);
         }
     }
-        //  public class FlagTests_Expect_Throw
-        //  {
-        //      [Fact]
-        //      public void Test_ResetFlag_Constructor_ZeroLength_Throws()
-        //      {
-        //          Assert.Throws<ArgumentOutOfRangeException>(
-        //              () => { MultipleBinaryFlag multipleBinaryFlag = new MultipleBinaryFlag(0); });
-        //      }
-        // 
-        //      [Fact]
-        //      public void Test_ResetFlag_OutOfRange_Throws()
-        //      {
-        //          MultipleBinaryFlag multipleBinaryFlag = new MultipleBinaryFlag(3);
-        //          Assert.Throws<ArgumentOutOfRangeException>(
-        //              () => { multipleBinaryFlag.ResetFlag(3); });
-        //      }
-        // 
-        //      [Fact]
-        //      public void Test_SetFlag_OutOfRange_Throws()
-        //      {
-        //          MultipleBinaryFlag multipleBinaryFlag = new MultipleBinaryFlag(3);
-        //          Assert.Throws<ArgumentOutOfRangeException>(
-        //              () => { multipleBinaryFlag.SetFlag(3); });
-        //      }
-        //  }
-    }
+}
