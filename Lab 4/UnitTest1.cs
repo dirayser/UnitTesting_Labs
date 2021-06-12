@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Xunit;
 using IIG.CoSFE.DatabaseUtils;
 using IIG.PasswordHashingUtils;
@@ -31,9 +31,9 @@ namespace Tests_Lab4
         {
             string login = "usualLogin";
             string password = PasswordHasher.GetHash("usualPassword");
-            db.AddCredentials(login, password);
+            Assert.True(db.AddCredentials(login, password));
             Assert.True(db.CheckCredentials(login, password));
-            db.DeleteCredentials(login, password);
+            Assert.True(db.DeleteCredentials(login, password));
         }
 
         [Fact]
@@ -51,9 +51,9 @@ namespace Tests_Lab4
         {
             string login = "";
             string password = PasswordHasher.GetHash("");
-            db.AddCredentials(login, password);
+            Assert.False(db.AddCredentials(login, password));
             Assert.False(db.CheckCredentials(login, password));
-            db.DeleteCredentials(login, password);
+            Assert.True(db.DeleteCredentials(login, password));
         }
 
         [Fact]
@@ -61,9 +61,9 @@ namespace Tests_Lab4
         {
             string login = "Ты рагуль";
             string password = PasswordHasher.GetHash("Да");
-            db.AddCredentials(login, password);
+            Assert.True(db.AddCredentials(login, password));
             Assert.True(db.CheckCredentials(login, password));
-            db.DeleteCredentials(login, password);
+            Assert.True(db.DeleteCredentials(login, password));
         }
 
         [Fact]
@@ -71,9 +71,9 @@ namespace Tests_Lab4
         {
             string login = "日本語";
             string password = PasswordHasher.GetHash("象は鼻が長い");
-            db.AddCredentials(login, password);
+            Assert.True(db.AddCredentials(login, password));
             Assert.True(db.CheckCredentials(login, password));
-            db.DeleteCredentials(login, password);
+            Assert.True(db.DeleteCredentials(login, password));
         }
 
         [Fact]
@@ -81,10 +81,37 @@ namespace Tests_Lab4
         {
             string login = "someData";
             string password = PasswordHasher.GetHash("someMoreData");
-            db.AddCredentials(login, password);
+            Assert.True(db.AddCredentials(login, password));
             Assert.False(db.AddCredentials(login, password));
             Assert.True(db.CheckCredentials(login, password));
-            db.DeleteCredentials(login, password);
+            Assert.True(db.DeleteCredentials(login, password));
+        }
+
+        [Fact]
+        public void Test_SameLogin() // 2.1
+        {
+            string login = "someData";
+            string password = PasswordHasher.GetHash("someMoreData");
+            string password2 = PasswordHasher.GetHash("someMoreData2");
+            Assert.True(db.AddCredentials(login, password));
+            Assert.False(db.AddCredentials(login, password2));
+            Assert.True(db.CheckCredentials(login, password));
+            Assert.True(db.DeleteCredentials(login, password));
+        }
+
+        [Fact]
+        public void Test_UsedLogin() // 2.2
+        {
+            string login = "someData";
+            string login2 = "someData2";
+            string password = PasswordHasher.GetHash("someMoreData");
+            string password2 = PasswordHasher.GetHash("someMoreData2");
+            Assert.True(db.AddCredentials(login, password));
+            Assert.True(db.AddCredentials(login2, password2));
+            Assert.False(db.UpdateCredentials(login, password, login2, password2));
+            Assert.True(db.CheckCredentials(login, password));
+            Assert.True(db.DeleteCredentials(login, password));
+            Assert.True(db.DeleteCredentials(login2, password2));
         }
 
         [Fact]
@@ -94,12 +121,12 @@ namespace Tests_Lab4
             string newLogin = "new";
             string password = PasswordHasher.GetHash("oldP");
             string newPassword = PasswordHasher.GetHash("newP");
-            db.AddCredentials(login, password);
+            Assert.True(db.AddCredentials(login, password));
             Assert.True(db.CheckCredentials(login, password));
-            db.UpdateCredentials(login, password, newLogin, newPassword);
+            Assert.True(db.UpdateCredentials(login, password, newLogin, newPassword));
             Assert.True(db.CheckCredentials(newLogin, newPassword));
             Assert.False(db.CheckCredentials(login, password));
-            db.DeleteCredentials(newLogin, newPassword);
+            Assert.True(db.DeleteCredentials(newLogin, newPassword));
             Assert.False(db.CheckCredentials(newLogin, newPassword));
         }
     }
@@ -107,7 +134,7 @@ namespace Tests_Lab4
     [Collection("Sequential")]
     public class Flag_Tests_Expect_True
     {
-        static string path = "C:/Users/diray/Documents/forLab.txt";
+       const string path = "C:/Users/diray/Documents/forLab.txt";
 
         [Fact]
         public void Test_InitTrue()
@@ -117,7 +144,7 @@ namespace Tests_Lab4
             Assert.True(condition);
             BaseFileWorker.Write(condition.ToString(), path);
             string fromFile = BaseFileWorker.ReadAll(path);
-            Assert.Equal("True", fromFile);
+            Assert.Equal(Boolean.TrueString, fromFile);
         }
 
         [Fact]
@@ -127,7 +154,7 @@ namespace Tests_Lab4
             var result = multipleBinaryFlag.GetFlag();
             BaseFileWorker.Write(result.ToString(), path);
             string fromFile = BaseFileWorker.ReadAll(path);
-            Assert.Equal("True", fromFile);
+            Assert.Equal(Boolean.TrueString, fromFile);
             Assert.True(result);
         }
 
@@ -141,7 +168,7 @@ namespace Tests_Lab4
             var result = multipleBinaryFlag.GetFlag();
             BaseFileWorker.Write(result.ToString(), path);
             string fromFile = BaseFileWorker.ReadAll(path);
-            Assert.Equal("True", fromFile);
+            Assert.Equal(Boolean.TrueString, fromFile);
             Assert.True(result);
         }
 
@@ -155,7 +182,7 @@ namespace Tests_Lab4
             var result = multipleBinaryFlag.GetFlag();
             BaseFileWorker.Write(result.ToString(), path);
             string fromFile = BaseFileWorker.ReadAll(path);
-            Assert.Equal("True", fromFile);
+            Assert.Equal(Boolean.TrueString, fromFile);
             Assert.True(result);
         }
 
@@ -169,7 +196,7 @@ namespace Tests_Lab4
             var result = multipleBinaryFlag.GetFlag();
             BaseFileWorker.Write(result.ToString(), path);
             string fromFile = BaseFileWorker.ReadAll(path);
-            Assert.Equal("True", fromFile);
+            Assert.Equal(Boolean.TrueString, fromFile);
             Assert.True(result);
         }
 
@@ -182,7 +209,7 @@ namespace Tests_Lab4
             var result = multipleBinaryFlag.GetFlag();
             BaseFileWorker.Write(result.ToString(), path);
             string fromFile = BaseFileWorker.ReadAll(path);
-            Assert.Equal("True", fromFile);
+            Assert.Equal(Boolean.TrueString, fromFile);
             Assert.True(result);
         }
     }
@@ -190,7 +217,7 @@ namespace Tests_Lab4
     [Collection("Sequential")]
     public class FlagTests_Expect_False
     {
-        static string path = "C:/Users/diray/Documents/forLab.txt";
+       const string path = "C:/Users/diray/Documents/forLab.txt";
 
         [Fact]
         public void Test_GetFlag_DefaultFalseValue_False()
@@ -199,7 +226,7 @@ namespace Tests_Lab4
             var result = multipleBinaryFlag.GetFlag();
             BaseFileWorker.Write(result.ToString(), path);
             string fromFile = BaseFileWorker.ReadAll(path);
-            Assert.Equal("False", fromFile);
+            Assert.Equal(Boolean.FalseString, fromFile);
             Assert.False(result);
         }
 
@@ -212,7 +239,7 @@ namespace Tests_Lab4
             var result = multipleBinaryFlag.GetFlag();
             BaseFileWorker.Write(result.ToString(), path);
             string fromFile = BaseFileWorker.ReadAll(path);
-            Assert.Equal("False", fromFile);
+            Assert.Equal(Boolean.FalseString, fromFile);
             Assert.False(result);
         }
 
@@ -225,7 +252,7 @@ namespace Tests_Lab4
             var result = multipleBinaryFlag.GetFlag();
             BaseFileWorker.Write(result.ToString(), path);
             string fromFile = BaseFileWorker.ReadAll(path);
-            Assert.Equal("False", fromFile);
+            Assert.Equal(Boolean.FalseString, fromFile);
             Assert.False(result);
         }
     }
@@ -233,7 +260,7 @@ namespace Tests_Lab4
     [Collection("Sequential")]
     public class FlagTests_Expect_Null
     {
-        static string path = "C:/Users/diray/Documents/forLab.txt";
+        const string path = "C:/Users/diray/Documents/forLab.txt";
 
         [Fact]
         public void Test_GetFlag_Disposed_Null()
@@ -243,7 +270,7 @@ namespace Tests_Lab4
             var result = multipleBinaryFlag.GetFlag();
             BaseFileWorker.Write(result.ToString(), path);
             string fromFile = BaseFileWorker.ReadAll(path);
-            Assert.Equal("", fromFile);
+            Assert.Equal(string.Empty, fromFile);
             Assert.Null(result);
         }
 
@@ -258,7 +285,7 @@ namespace Tests_Lab4
             var result = multipleBinaryFlag.GetFlag();
             BaseFileWorker.Write(result.ToString(), path);
             string fromFile = BaseFileWorker.ReadAll(path);
-            Assert.Equal("", fromFile);
+            Assert.Equal(string.Empty, fromFile);
             Assert.Null(result);
         }
     }
